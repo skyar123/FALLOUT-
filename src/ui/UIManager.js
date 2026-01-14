@@ -12,6 +12,9 @@ class UIManager {
         };
 
         this.currentScreen = 'loading';
+        this.renderEngine = new RenderEngine();
+        this.isAnimating = false;
+        this.currentRenderData = null;
         this.setupEventListeners();
     }
 
@@ -78,6 +81,21 @@ class UIManager {
         if (this.screens[screenName]) {
             this.screens[screenName].classList.add('active');
             this.currentScreen = screenName;
+
+            // Handle screen-specific rendering
+            if (screenName === 'game') {
+                this.startLocationRendering();
+                if (this.combatRenderer) {
+                    this.combatRenderer.stopAnimation();
+                }
+            } else if (screenName === 'combat') {
+                this.stopLocationRendering();
+            } else {
+                this.stopLocationRendering();
+                if (this.combatRenderer) {
+                    this.combatRenderer.stopAnimation();
+                }
+            }
         }
     }
 
@@ -201,43 +219,32 @@ class UIManager {
         document.getElementById('location-name').textContent = location.name;
         document.getElementById('location-description').textContent = location.description;
 
-        // Render simple canvas representation
-        this.renderLocationCanvas(location, npcs, items);
+        // Store render data
+        this.currentRenderData = { location, npcs, items };
+
+        // Start rendering with animation
+        this.startLocationRendering();
     }
 
-    renderLocationCanvas(location, npcs, items) {
-        const canvas = document.getElementById('game-canvas');
-        const ctx = canvas.getContext('2d');
+    startLocationRendering() {
+        if (this.isAnimating) return;
 
-        // Set canvas size
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        this.isAnimating = true;
+        this.renderEngine.startAnimation(() => {
+            if (this.currentScreen === 'game' && this.currentRenderData) {
+                const { location, npcs, items } = this.currentRenderData;
 
-        // Clear canvas
-        ctx.fillStyle = '#1a1a1a';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // Get player data
+                EventSystem.emit('get-player-stats', (player) => {
+                    this.renderEngine.render(location, npcs, items, player);
+                });
+            }
+        });
+    }
 
-        // Draw location sprite
-        ctx.font = '120px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(location.sprite, canvas.width / 2, canvas.height / 3);
-
-        // Draw NPCs
-        if (npcs && npcs.length > 0) {
-            ctx.font = '40px Arial';
-            let x = canvas.width / 4;
-            npcs.forEach((npc, index) => {
-                ctx.fillText(npc.sprite, x, canvas.height * 2/3);
-                x += canvas.width / (npcs.length + 1);
-            });
-        }
-
-        // Draw items
-        if (items && items.length > 0) {
-            ctx.font = '30px Arial';
-            ctx.fillText('✨', canvas.width - 50, 50);
-        }
+    stopLocationRendering() {
+        this.isAnimating = false;
+        this.renderEngine.stopAnimation();
     }
 
     showExplorationOptions() {
@@ -300,29 +307,69 @@ class UIManager {
     // Combat UI
     showCombat(combatState) {
         this.showScreen('combat');
+        this.stopLocationRendering();
         this.updateCombatUI(combatState);
+        this.startCombatRendering(combatState);
+    }
+
+    startCombatRendering(combatState) {
+        this.renderEngine.stopAnimation();
+
+        const combatScreen = document.querySelector('#combat-screen .enemy-section');
+        let combatCanvas = document.getElementById('combat-canvas');
+
+        if (!combatCanvas) {
+            combatCanvas = document.createElement('canvas');
+            combatCanvas.id = 'combat-canvas';
+            combatCanvas.style.width = '100%';
+            combatCanvas.style.height = '300px';
+            combatCanvas.style.marginBottom = '1rem';
+            combatScreen.insertBefore(combatCanvas, combatScreen.firstChild);
+        }
+
+        const combatRenderer = new RenderEngine();
+        combatRenderer.canvas = combatCanvas;
+        combatRenderer.ctx = combatCanvas.getContext('2d');
+        combatRenderer.setupCanvas();
+
+        combatRenderer.startAnimation(() => {
+            if (this.currentScreen === 'combat') {
+                EventSystem.emit('get-combat-state', (state) => {
+                    if (state) {
+                        combatRenderer.renderCombat(state.player, state.enemy, state.log);
+                    }
+                });
+            }
+        });
+
+        this.combatRenderer = combatRenderer;
     }
 
     updateCombatUI(combatState) {
         const { enemy, player, log } = combatState;
 
-        // Enemy
         document.getElementById('enemy-name').textContent = enemy.name;
-        document.getElementById('enemy-sprite').textContent = enemy.sprite;
         document.getElementById('enemy-hp').textContent = `${enemy.currentHealth}/${enemy.maxHealth}`;
         const enemyHealthPercent = (enemy.currentHealth / enemy.maxHealth) * 100;
         document.getElementById('enemy-health-bar').style.width = `${enemyHealthPercent}%`;
 
-        // Player
         document.getElementById('combat-player-name').textContent = player.name;
         document.getElementById('combat-player-hp').textContent = `${player.health}/${player.maxHealth}`;
         const playerHealthPercent = (player.health / player.maxHealth) * 100;
         document.getElementById('combat-player-health-bar').style.width = `${playerHealthPercent}%`;
 
-        // Combat log
         const logDiv = document.getElementById('combat-log');
         logDiv.innerHTML = log.map(msg => `<p>${msg}</p>`).join('');
         logDiv.scrollTop = logDiv.scrollHeight;
+
+        if (this.combatRenderer && log.length > 0) {
+            const lastLog = log[log.length - 1];
+            if (lastLog.includes('attack') || lastLog.includes('Hit')) {
+                this.combatRenderer.showCombatEffect('hit', this.combatRenderer.canvas.width / 2, this.combatRenderer.canvas.height * 0.25);
+            } else if (lastLog.includes('spell') || lastLog.includes('cast')) {
+                this.combatRenderer.showCombatEffect('spell', this.combatRenderer.canvas.width / 2, this.combatRenderer.canvas.height * 0.25);
+            }
+        }
     }
 
     // Inventory UI

@@ -130,6 +130,12 @@ class Game {
             this.ui.updateCombatUI(combatState);
         });
 
+        // Add event to get combat state
+        EventSystem.on('get-combat-state', (callback) => {
+            const state = this.systems.combat.getCombatState();
+            if (state) callback(state);
+        });
+
         EventSystem.on('combat-ended', (victory) => {
             setTimeout(() => {
                 this.ui.showScreen('game');
