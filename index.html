@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>LICHCRAFT - A Prime RPG</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="loading-screen" class="screen active">
+            <h1>LICHCRAFT</h1>
+            <p>A tale of immortality in the age of Prime</p>
+            <button id="start-button" class="prime-button">BEGIN YOUR JOURNEY</button>
+        </div>
+
+        <div id="character-creation" class="screen">
+            <div class="creation-content">
+                <h2 id="creation-title">Character Creation</h2>
+                <p id="creation-prompt"></p>
+                <div id="creation-input-container"></div>
+                <button id="creation-next" class="prime-button">NEXT</button>
+            </div>
+        </div>
+
+        <div id="game-screen" class="screen">
+            <div class="game-ui">
+                <div class="top-bar">
+                    <div class="player-info">
+                        <h3 id="player-name">Player</h3>
+                        <div class="stats">
+                            <span>HP: <span id="player-hp">5</span>/5</span>
+                            <span class="separator">|</span>
+                            <span id="player-tier">Basic</span>
+                        </div>
+                    </div>
+                    <button id="menu-button" class="icon-button">☰</button>
+                </div>
+
+                <div id="main-view">
+                    <canvas id="game-canvas"></canvas>
+                    <div id="location-info">
+                        <h3 id="location-name">Location</h3>
+                        <p id="location-description"></p>
+                    </div>
+                </div>
+
+                <div id="dialogue-box" class="dialogue-box hidden">
+                    <div class="speaker-info">
+                        <h4 id="speaker-name"></h4>
+                    </div>
+                    <p id="dialogue-text"></p>
+                    <div id="dialogue-choices"></div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="action-button" id="explore-btn">EXPLORE</button>
+                    <button class="action-button" id="inventory-btn">INVENTORY</button>
+                    <button class="action-button" id="quests-btn">QUESTS</button>
+                    <button class="action-button" id="stats-btn">STATUS</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="combat-screen" class="screen">
+            <div class="combat-ui">
+                <div class="enemy-section">
+                    <h3 id="enemy-name"></h3>
+                    <div class="enemy-sprite" id="enemy-sprite"></div>
+                    <div class="health-bar">
+                        <div class="health-fill" id="enemy-health-bar"></div>
+                    </div>
+                    <p class="health-text"><span id="enemy-hp"></span> HP</p>
+                </div>
+
+                <div class="combat-log" id="combat-log"></div>
+
+                <div class="player-section">
+                    <h3 id="combat-player-name"></h3>
+                    <div class="health-bar">
+                        <div class="health-fill" id="combat-player-health-bar"></div>
+                    </div>
+                    <p class="health-text"><span id="combat-player-hp"></span> HP</p>
+                </div>
+
+                <div class="combat-actions" id="combat-actions">
+                    <button class="combat-button" data-action="attack">ATTACK</button>
+                    <button class="combat-button" data-action="spell">SPELL</button>
+                    <button class="combat-button" data-action="item">ITEM</button>
+                    <button class="combat-button" data-action="flee">FLEE</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="inventory-screen" class="screen overlay">
+            <div class="panel">
+                <h2>INVENTORY</h2>
+                <button class="close-button">✕</button>
+                <div class="inventory-grid" id="inventory-grid"></div>
+                <div class="inventory-details" id="inventory-details">
+                    <p>Select an item to view details</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="quests-screen" class="screen overlay">
+            <div class="panel">
+                <h2>ACTIVE QUESTS</h2>
+                <button class="close-button">✕</button>
+                <div class="quest-list" id="quest-list"></div>
+            </div>
+        </div>
+
+        <div id="stats-screen" class="screen overlay">
+            <div class="panel">
+                <h2>CHARACTER STATUS</h2>
+                <button class="close-button">✕</button>
+                <div id="stats-content"></div>
+            </div>
+        </div>
+
+        <div id="menu-screen" class="screen overlay">
+            <div class="panel">
+                <h2>MENU</h2>
+                <button class="close-button">✕</button>
+                <div class="menu-options">
+                    <button class="menu-option">Save Game</button>
+                    <button class="menu-option">Load Game</button>
+                    <button class="menu-option">Settings</button>
+                    <button class="menu-option" id="main-menu-btn">Main Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Scripts -->
+    <script src="src/engine/GameState.js"></script>
+    <script src="src/engine/EventSystem.js"></script>
+    <script src="src/systems/CombatSystem.js"></script>
+    <script src="src/systems/DialogueSystem.js"></script>
+    <script src="src/systems/ExplorationSystem.js"></script>
+    <script src="src/systems/InventorySystem.js"></script>
+    <script src="src/systems/QuestSystem.js"></script>
+    <script src="src/data/GameData.js"></script>
+    <script src="src/ui/UIManager.js"></script>
+    <script src="src/engine/Game.js"></script>
+    <script src="src/main.js"></script>
+</body>
+</html>

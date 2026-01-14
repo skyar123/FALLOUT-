@@ -1,0 +1,639 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --prime-blue: #232F3E;
+    --prime-orange: #FF9900;
+    --prime-light: #37475A;
+    --prime-dark: #131A22;
+    --text-light: #FFFFFF;
+    --text-dark: #0F1111;
+    --health-green: #4CAF50;
+    --health-red: #f44336;
+    --spell-purple: #9C27B0;
+    --warning-yellow: #FFC107;
+}
+
+body {
+    font-family: 'Courier New', monospace;
+    background: var(--prime-dark);
+    color: var(--text-light);
+    overflow: hidden;
+    touch-action: manipulation;
+}
+
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+}
+
+.screen.active {
+    display: flex;
+}
+
+.screen.overlay {
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 100;
+}
+
+/* Loading Screen */
+#loading-screen {
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, var(--prime-dark) 0%, var(--prime-blue) 100%);
+}
+
+#loading-screen h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: var(--prime-orange);
+    text-shadow: 0 0 20px var(--prime-orange);
+}
+
+#loading-screen p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.8;
+}
+
+/* Character Creation */
+#character-creation {
+    justify-content: center;
+    align-items: center;
+    background: var(--prime-blue);
+    padding: 2rem;
+}
+
+.creation-content {
+    max-width: 600px;
+    width: 100%;
+}
+
+#creation-title {
+    color: var(--prime-orange);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+}
+
+#creation-prompt {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+#creation-input-container {
+    margin-bottom: 2rem;
+}
+
+#creation-input-container input,
+#creation-input-container select {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    background: var(--prime-light);
+    border: 2px solid var(--prime-orange);
+    color: var(--text-light);
+    font-family: 'Courier New', monospace;
+    margin-bottom: 0.5rem;
+}
+
+#creation-input-container .attribute-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.attribute-item {
+    background: var(--prime-light);
+    padding: 1rem;
+    border: 2px solid var(--prime-orange);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.attribute-item:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+}
+
+.attribute-item.selected {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+    transform: scale(1.05);
+}
+
+/* Buttons */
+.prime-button {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+    border: none;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.prime-button:hover {
+    background: var(--prime-light);
+    color: var(--prime-orange);
+    transform: scale(1.05);
+}
+
+.prime-button:active {
+    transform: scale(0.95);
+}
+
+/* Game Screen */
+.game-ui {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: var(--prime-dark);
+}
+
+.top-bar {
+    background: var(--prime-blue);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--prime-orange);
+}
+
+.player-info h3 {
+    color: var(--prime-orange);
+    margin-bottom: 0.5rem;
+}
+
+.stats {
+    font-size: 0.9rem;
+}
+
+.separator {
+    margin: 0 0.5rem;
+    opacity: 0.5;
+}
+
+#main-view {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 100%;
+    background: #1a1a1a;
+}
+
+#location-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(35, 47, 62, 0.95);
+    padding: 1rem;
+    border-top: 2px solid var(--prime-orange);
+}
+
+#location-name {
+    color: var(--prime-orange);
+    margin-bottom: 0.5rem;
+}
+
+#location-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Dialogue Box */
+.dialogue-box {
+    position: absolute;
+    bottom: 80px;
+    left: 1rem;
+    right: 1rem;
+    background: rgba(19, 26, 34, 0.98);
+    border: 2px solid var(--prime-orange);
+    padding: 1rem;
+    max-height: 40%;
+    overflow-y: auto;
+}
+
+.dialogue-box.hidden {
+    display: none;
+}
+
+.speaker-info {
+    margin-bottom: 0.5rem;
+}
+
+#speaker-name {
+    color: var(--prime-orange);
+    font-size: 1.1rem;
+}
+
+#dialogue-text {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+#dialogue-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dialogue-choice {
+    background: var(--prime-light);
+    border: 1px solid var(--prime-orange);
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+    color: var(--text-light);
+    font-family: 'Courier New', monospace;
+}
+
+.dialogue-choice:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+}
+
+/* Action Bar */
+.action-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+    background: var(--prime-blue);
+    border-top: 2px solid var(--prime-orange);
+}
+
+.action-button {
+    padding: 1rem;
+    background: var(--prime-light);
+    border: 1px solid var(--prime-orange);
+    color: var(--text-light);
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.action-button:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+}
+
+/* Combat Screen */
+.combat-ui {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(180deg, #2a0a0a 0%, var(--prime-dark) 100%);
+    padding: 1rem;
+}
+
+.enemy-section {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#enemy-name {
+    color: var(--health-red);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.enemy-sprite {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 1rem;
+    background: var(--prime-light);
+    border: 2px solid var(--health-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.health-bar {
+    width: 100%;
+    height: 30px;
+    background: var(--prime-dark);
+    border: 2px solid var(--prime-orange);
+    margin-bottom: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.health-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--health-green) 0%, var(--health-red) 100%);
+    transition: width 0.3s;
+}
+
+.health-text {
+    text-align: center;
+    font-weight: bold;
+}
+
+.combat-log {
+    flex: 1;
+    background: rgba(35, 47, 62, 0.5);
+    border: 2px solid var(--prime-orange);
+    padding: 1rem;
+    overflow-y: auto;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+}
+
+.combat-log p {
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.combat-log p:last-child {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.player-section {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.combat-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.combat-button {
+    padding: 1.5rem;
+    background: var(--prime-light);
+    border: 2px solid var(--prime-orange);
+    color: var(--text-light);
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: bold;
+}
+
+.combat-button:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+    transform: scale(1.05);
+}
+
+.combat-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Panel Screens */
+.panel {
+    background: var(--prime-blue);
+    margin: 2rem;
+    padding: 2rem;
+    border: 2px solid var(--prime-orange);
+    position: relative;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+}
+
+.panel h2 {
+    color: var(--prime-orange);
+    margin-bottom: 1.5rem;
+}
+
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--health-red);
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+
+.close-button:hover {
+    background: var(--prime-orange);
+}
+
+/* Inventory */
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.inventory-item {
+    aspect-ratio: 1;
+    background: var(--prime-light);
+    border: 2px solid var(--prime-orange);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    padding: 0.5rem;
+}
+
+.inventory-item:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+}
+
+.inventory-item-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.inventory-item-name {
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.inventory-details {
+    background: var(--prime-light);
+    padding: 1rem;
+    border: 2px solid var(--prime-orange);
+}
+
+/* Quest List */
+.quest-item {
+    background: var(--prime-light);
+    border: 2px solid var(--prime-orange);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.quest-item h3 {
+    color: var(--prime-orange);
+    margin-bottom: 0.5rem;
+}
+
+.quest-objectives {
+    margin-top: 0.5rem;
+}
+
+.quest-objective {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 153, 0, 0.3);
+}
+
+.quest-objective:last-child {
+    border-bottom: none;
+}
+
+.quest-objective.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+/* Stats Screen */
+#stats-content {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.stat-section {
+    background: var(--prime-light);
+    padding: 1rem;
+    border: 2px solid var(--prime-orange);
+}
+
+.stat-section h3 {
+    color: var(--prime-orange);
+    margin-bottom: 1rem;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(255, 153, 0, 0.3);
+}
+
+.stat-row:last-child {
+    border-bottom: none;
+}
+
+/* Menu Options */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.menu-option {
+    padding: 1.5rem;
+    background: var(--prime-light);
+    border: 2px solid var(--prime-orange);
+    color: var(--text-light);
+    font-family: 'Courier New', monospace;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.menu-option:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+}
+
+/* Icon Button */
+.icon-button {
+    background: var(--prime-light);
+    border: 2px solid var(--prime-orange);
+    color: var(--prime-orange);
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+}
+
+.icon-button:hover {
+    background: var(--prime-orange);
+    color: var(--prime-dark);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    #loading-screen h1 {
+        font-size: 2rem;
+    }
+
+    #loading-screen p {
+        font-size: 1rem;
+    }
+
+    .action-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .panel {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .combat-actions {
+        gap: 0.5rem;
+    }
+
+    .combat-button {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--prime-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--prime-orange);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--prime-light);
+}
