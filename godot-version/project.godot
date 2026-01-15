@@ -11,20 +11,18 @@ config_version=5
 [application]
 
 config/name="LICHCRAFT"
-config/description="A Fallout-inspired mobile RPG about trans resilience and transformation"
+config/description="A Fallout-inspired RPG about trans resilience and transformation"
 run/main_scene="res://scenes/Main.tscn"
-config/features=PackedStringArray("4.3", "Mobile")
+config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=1080
-window/size/viewport_height=1920
-window/size/mode=2
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/size/resizable=true
 window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
-window/handheld/orientation=1
+window/stretch/aspect="keep"
 
 [autoload]
 
@@ -32,5 +30,5 @@ GameState="*res://scripts/GameState.gd"
 
 [rendering]
 
-renderer/rendering_method="mobile"
-textures/vram_compression/import_etc2_astc=true
+renderer/rendering_method="forward_plus"
+textures/canvas_textures/default_texture_filter=0

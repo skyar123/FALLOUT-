@@ -71,9 +71,9 @@ LICHCRAFT is available in two versions:
 - Progressive Web App (PWA) support
 
 ### Godot Engine Version (godot-version/)
-- Native game engine implementation
+- Native desktop game engine implementation
 - Better performance and features
-- True native mobile support (APK/IPA)
+- Native Windows, Mac, and Linux support
 - Requires [Godot Engine](https://godotengine.org/) to develop
 - See [godot-version/README.md](godot-version/README.md) for details
 

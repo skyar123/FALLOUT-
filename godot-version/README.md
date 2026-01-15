@@ -2,13 +2,13 @@
 
 > Native game engine implementation of LICHCRAFT
 
-This directory contains the Godot Engine version of LICHCRAFT, providing a native implementation with improved performance, better mobile support, and access to Godot's powerful features.
+This directory contains the Godot Engine version of LICHCRAFT, providing a native desktop implementation with improved performance and access to Godot's powerful features.
 
 ## About Godot Engine
 
 [Godot Engine](https://godotengine.org/) is a free and open-source 2D and 3D game engine with a focus on usability and flexibility. It provides:
 
-- Cross-platform support (Windows, Mac, Linux, Android, iOS, HTML5)
+- Cross-platform desktop support (Windows, Mac, Linux)
 - Powerful scene system and node-based architecture
 - GDScript (Python-like) scripting language
 - Built-in animation, physics, and audio systems
@@ -82,8 +82,8 @@ This Godot version is a work in progress. Current status:
 - ⬜ Import game data from web version
 - ⬜ Add sprites and visual assets
 - ⬜ Sound effects and music
-- ⬜ Mobile touch controls optimization
-- ⬜ Export configurations for mobile platforms
+- ⬜ Keyboard shortcuts and controls
+- ⬜ Export configurations for desktop platforms
 
 ## Key Systems
 
@@ -144,21 +144,24 @@ The web version (JavaScript) serves as the content reference. To port content:
 4. **Dialogue**: Convert dialogue trees to Godot format
 5. **Items**: Create item resources in `data/items/`
 
-## Mobile Export
+## Desktop Export
 
-To export for mobile platforms:
+To export for desktop platforms:
 
-### Android
-1. Install Android SDK and configure in Editor Settings
-2. Project → Export → Add → Android
-3. Configure package name, icons, and permissions
-4. Export APK or AAB
+### Windows
+1. Project → Export → Add → Windows Desktop
+2. Configure executable name and icon
+3. Export EXE
 
-### iOS
-1. Requires macOS with Xcode installed
-2. Project → Export → Add → iOS
-3. Configure bundle ID, icons, and signing
-4. Export Xcode project
+### Linux
+1. Project → Export → Add → Linux/X11
+2. Configure executable name
+3. Export binary
+
+### macOS
+1. Project → Export → Add → macOS
+2. Configure bundle ID and icon
+3. Export .app bundle
 
 ## Customization
 
@@ -198,10 +201,10 @@ var data = json.data
 ## Debugging
 
 Enable debugging in the editor:
-- **Debug → Deploy with Remote Debug** for mobile testing
 - **Print statements**: Use `print()` for console output
 - **Breakpoints**: Click line numbers in script editor
 - **Remote Scene Tree**: View and edit running game
+- **Debug → Profiler** for performance monitoring
 
 ## Contributing
 
@@ -210,7 +213,7 @@ When adding features to the Godot version:
 1. Keep parity with web version content
 2. Follow GDScript style guide
 3. Document public functions with comments
-4. Test on both desktop and mobile resolutions
+4. Test on desktop platforms (Windows, Mac, Linux)
 5. Update this README with new features
 
 ## Differences from Web Version
@@ -221,7 +224,7 @@ When adding features to the Godot version:
 | Rendering | HTML/CSS | Godot 2D |
 | Save System | localStorage | FileAccess |
 | Performance | Browser-dependent | Native, optimized |
-| Mobile | PWA | Native APK/IPA |
+| Platform | Browser (PWA) | Desktop (Windows/Mac/Linux) |
 | Editor | Text editor | Godot IDE |
 
 ## Resources
@@ -237,4 +240,4 @@ Same as main project - free to use, modify, and distribute.
 
 ---
 
-**Note**: This Godot version aims to provide a more performant, native alternative to the web version while maintaining the same story, mechanics, and soul of LICHCRAFT. 🏴⚧️💀
+**Note**: This Godot version provides a native desktop alternative to the web version with better performance while maintaining the same story, mechanics, and soul of LICHCRAFT. 🏴⚧️💀
