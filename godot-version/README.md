@@ -21,6 +21,12 @@ This directory contains the Godot Engine version of LICHCRAFT, providing a nativ
 godot-version/
 ├── project.godot          # Main Godot project file
 ├── icon.svg               # Project icon
+├── addons/                # Godot Asset Library plugins (see ASSET_LIBRARY_GUIDE.md)
+│   ├── dialogue_manager/  # Dialogue Manager 3 (install via AssetLib)
+│   ├── inventory_forge/   # Inventory Forge (install via AssetLib)
+│   ├── nexus_quest_weaver/ # Quest tracking system (install via AssetLib)
+│   ├── skelerealms/       # Open world RPG framework (install via AssetLib)
+│   └── turn_based_combat/ # Combat system (install via AssetLib)
 ├── scenes/                # Scene files (.tscn)
 │   ├── Main.tscn          # Main menu scene
 │   ├── GameWorld.tscn     # Game exploration scene
@@ -59,6 +65,32 @@ godot-version/
 - Press **F6** to run the current scene
 - Press **F8** to enable debugging
 - Press **Escape** to stop the game
+
+## 📦 Godot Asset Library Plugins
+
+This project is designed to work with several high-quality Asset Library plugins to enhance gameplay systems.
+
+### Recommended Plugins
+
+The `addons/` directory is pre-configured for the following plugins:
+
+1. **Dialogue Manager 3** - Advanced branching dialogue system
+2. **Inventory Forge** - Modern inventory management (perfect for sacrifice mechanics)
+3. **Nexus Quest Weaver** - Quest tracking system
+4. **Skelerealms** - Open world RPG framework for exploration
+5. **Turn Based Combat** - Pokemon-style combat system
+
+### Installation
+
+**See [ASSET_LIBRARY_GUIDE.md](ASSET_LIBRARY_GUIDE.md) for comprehensive installation instructions and integration notes.**
+
+Quick start:
+1. Open project in Godot
+2. Click **AssetLib** tab
+3. Search for and install each plugin
+4. Enable in **Project → Project Settings → Plugins**
+
+All recommended plugins are MIT or CC-BY licensed and free to use.
 
 ## Development Status
 
