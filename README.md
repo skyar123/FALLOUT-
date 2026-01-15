@@ -59,6 +59,24 @@ Gather three components for the lichdom ritual:
 2. **Rare Component**: A magical artifact of power
 3. **Magical Location**: A place of power for the ritual
 
+## Versions
+
+LICHCRAFT is available in two versions:
+
+### Web Version (This Directory)
+- Pure JavaScript implementation
+- Runs in any modern browser
+- Works on desktop and mobile
+- No installation required
+- Progressive Web App (PWA) support
+
+### Godot Engine Version (godot-version/)
+- Native game engine implementation
+- Better performance and features
+- True native mobile support (APK/IPA)
+- Requires [Godot Engine](https://godotengine.org/) to develop
+- See [godot-version/README.md](godot-version/README.md) for details
+
 ## How to Play
 
 ### Installation
@@ -154,6 +172,11 @@ FALLOUT-/
 │   ├── ui/
 │   │   └── UIManager.js    # UI rendering and interactions
 │   └── main.js             # Entry point
+├── godot-version/          # Godot Engine native version
+│   ├── project.godot       # Godot project file
+│   ├── scenes/             # Game scenes
+│   ├── scripts/            # GDScript files
+│   └── assets/             # Game assets
 └── README.md
 ```
 

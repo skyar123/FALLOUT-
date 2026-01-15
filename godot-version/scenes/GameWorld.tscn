@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://game_world"]
+
+[ext_resource type="Script" path="res://scripts/GameWorld.gd" id="1_gameworld"]
+
+[node name="GameWorld" type="Node2D"]
+script = ExtResource("1_gameworld")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameContainer" type="Control" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LocationView" type="VBoxContainer" parent="CanvasLayer/GameContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LocationName" type="Label" parent="CanvasLayer/GameContainer/LocationView"]
+layout_mode = 2
+text = "Location Name"
+horizontal_alignment = 1
+
+[node name="LocationDescription" type="RichTextLabel" parent="CanvasLayer/GameContainer/LocationView"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Location description will appear here."
+
+[node name="ActionsContainer" type="VBoxContainer" parent="CanvasLayer/GameContainer/LocationView"]
+layout_mode = 2
+
+[node name="ActionBar" type="HBoxContainer" parent="CanvasLayer/GameContainer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -80.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="ExploreButton" type="Button" parent="CanvasLayer/GameContainer/ActionBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Explore"
+
+[node name="InventoryButton" type="Button" parent="CanvasLayer/GameContainer/ActionBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Inventory"
+
+[node name="QuestsButton" type="Button" parent="CanvasLayer/GameContainer/ActionBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Quests"
+
+[node name="StatusButton" type="Button" parent="CanvasLayer/GameContainer/ActionBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Status"
+
+[connection signal="pressed" from="CanvasLayer/GameContainer/ActionBar/ExploreButton" to="." method="_on_explore_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameContainer/ActionBar/InventoryButton" to="." method="_on_inventory_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameContainer/ActionBar/QuestsButton" to="." method="_on_quests_pressed"]
+[connection signal="pressed" from="CanvasLayer/GameContainer/ActionBar/StatusButton" to="." method="_on_status_pressed"]

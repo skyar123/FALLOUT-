@@ -1,0 +1,110 @@
+[gd_scene load_steps=2 format=3 uid="uid://combat_scene"]
+
+[ext_resource type="Script" path="res://scripts/CombatSystem.gd" id="1_combat"]
+
+[node name="CombatScene" type="Node2D"]
+script = ExtResource("1_combat")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CombatUI" type="Control" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerArea" type="VBoxContainer" parent="CanvasLayer/CombatUI"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PlayerName" type="Label" parent="CanvasLayer/CombatUI/PlayerArea"]
+layout_mode = 2
+text = "You"
+horizontal_alignment = 1
+
+[node name="PlayerHP" type="ProgressBar" parent="CanvasLayer/CombatUI/PlayerArea"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="EnemyArea" type="VBoxContainer" parent="CanvasLayer/CombatUI"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+
+[node name="EnemyName" type="Label" parent="CanvasLayer/CombatUI/EnemyArea"]
+layout_mode = 2
+text = "Enemy"
+horizontal_alignment = 1
+
+[node name="EnemyHP" type="ProgressBar" parent="CanvasLayer/CombatUI/EnemyArea"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="CombatLog" type="RichTextLabel" parent="CanvasLayer/CombatUI"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Combat begins!"
+
+[node name="ActionButtons" type="HBoxContainer" parent="CanvasLayer/CombatUI"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -100.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="AttackButton" type="Button" parent="CanvasLayer/CombatUI/ActionButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Attack"
+
+[node name="SpellButton" type="Button" parent="CanvasLayer/CombatUI/ActionButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Spell"
+
+[node name="ItemButton" type="Button" parent="CanvasLayer/CombatUI/ActionButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Item"
+
+[node name="FleeButton" type="Button" parent="CanvasLayer/CombatUI/ActionButtons"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Flee"
+
+[connection signal="pressed" from="CanvasLayer/CombatUI/ActionButtons/AttackButton" to="." method="_on_attack_pressed"]
+[connection signal="pressed" from="CanvasLayer/CombatUI/ActionButtons/SpellButton" to="." method="_on_spell_pressed"]
+[connection signal="pressed" from="CanvasLayer/CombatUI/ActionButtons/ItemButton" to="." method="_on_item_pressed"]
+[connection signal="pressed" from="CanvasLayer/CombatUI/ActionButtons/FleeButton" to="." method="_on_flee_pressed"]
