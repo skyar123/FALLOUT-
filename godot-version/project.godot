@@ -27,6 +27,7 @@ window/stretch/aspect="keep"
 [autoload]
 
 GameState="*res://scripts/GameState.gd"
+RenderEngine="*res://scripts/RenderEngine.gd"
 
 [rendering]
 
