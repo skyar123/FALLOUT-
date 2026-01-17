@@ -1,0 +1,1220 @@
+{
+  "game_info": {
+    "title": "LICHCRAFT",
+    "description": "A trans cyberpunk RPG about transformation, resistance, and becoming undead to outlast corporate healthcare waiting lists"
+  },
+  "character_creation": {
+    "steps": [
+      {
+        "key": "name",
+        "prompt": "What is your name?",
+        "type": "text"
+      },
+      {
+        "key": "genderIdentity",
+        "prompt": "What is your gender identity?",
+        "type": "select",
+        "options": [
+          "Trans Woman",
+          "Trans Man",
+          "Non-Binary",
+          "Genderfluid",
+          "Agender",
+          "Other"
+        ]
+      },
+      {
+        "key": "politics",
+        "prompt": "What are your political views?",
+        "type": "select",
+        "options": [
+          "Communist",
+          "Anarchist",
+          "Eco-Socialist",
+          "Democratic Socialist",
+          "Syndicalist",
+          "Other"
+        ]
+      },
+      {
+        "key": "hobby",
+        "prompt": "What is your hobby?",
+        "type": "select",
+        "options": [
+          "Crafting",
+          "Cooking",
+          "Reading",
+          "Gardening",
+          "Gaming",
+          "Music",
+          "Art",
+          "Sports"
+        ]
+      },
+      {
+        "key": "dayJob",
+        "prompt": "What is your day job?",
+        "type": "select",
+        "options": [
+          "Prime Drone Operator",
+          "Barista",
+          "Warehouse Worker",
+          "Data Entry",
+          "Retail Worker",
+          "Gig Worker",
+          "Unemployed"
+        ]
+      },
+      {
+        "key": "subscriptionTier",
+        "prompt": "What is your Prime subscription tier?",
+        "type": "select",
+        "options": [
+          "Basic",
+          "Plus",
+          "Premium"
+        ]
+      },
+      {
+        "key": "magicalSource",
+        "prompt": "Where does your magical affinity come from?",
+        "type": "select",
+        "options": [
+          "Nature",
+          "Ritual Practice",
+          "Bloodline",
+          "Academic Study",
+          "Divine Connection",
+          "Raw Will"
+        ]
+      },
+      {
+        "key": "attributes",
+        "prompt": "Assign your attribute values: 3 (highest), 2 (medium), and 1 (lowest) to Strength, Sense, and Spells.",
+        "type": "attributes",
+        "attributes": [
+          {
+            "name": "Strength",
+            "description": "Physical power and combat"
+          },
+          {
+            "name": "Sense",
+            "description": "Perception and social skills"
+          },
+          {
+            "name": "Spells",
+            "description": "Magical prowess"
+          }
+        ]
+      }
+    ]
+  },
+  "npcs": {
+    "resistance_contact": {
+      "id": "resistance_contact",
+      "name": "Ash",
+      "title": "Resistance Member",
+      "location": "underground_market",
+      "sprite": "🥷",
+      "description": "A hooded figure with cybernetic enhancements. They seem to know more than they let on.",
+      "dialogue": "dialogue_ash"
+    },
+    "old_librarian": {
+      "id": "old_librarian",
+      "name": "Dr. Morgan",
+      "title": "Former Academic",
+      "location": "abandoned_library",
+      "sprite": "👴",
+      "description": "An elderly person surrounded by ancient texts and data tablets.",
+      "dialogue": "dialogue_morgan"
+    },
+    "prime_drone_operator": {
+      "id": "prime_drone_operator",
+      "name": "Taylor",
+      "title": "Prime Drone Operator",
+      "location": "home",
+      "sprite": "👷",
+      "description": "Your coworker who operates delivery drones. They seem burnt out.",
+      "dialogue": "dialogue_taylor"
+    },
+    "mysterious_vendor": {
+      "id": "mysterious_vendor",
+      "name": "The Collector",
+      "title": "Artifact Trader",
+      "location": "underground_market",
+      "sprite": "🧙",
+      "description": "A shadowy vendor dealing in rare and magical items.",
+      "dialogue": "dialogue_collector"
+    },
+    "prime_officer": {
+      "id": "prime_officer",
+      "name": "Officer Kane",
+      "title": "Prime Enforcement Officer",
+      "location": "prime_facility",
+      "sprite": "👮",
+      "description": "A Prime Enforcement Officer with cold, calculating eyes.",
+      "dialogue": "dialogue_kane"
+    },
+    "trans_elder": {
+      "id": "trans_elder",
+      "name": "Raven",
+      "title": "Community Elder",
+      "location": "safe_house",
+      "sprite": "🦸",
+      "description": "An elder in the trans community who has seen decades of struggle.",
+      "dialogue": "dialogue_raven",
+      "availableIf": {
+        "flag": "found_safe_house"
+      }
+    }
+  },
+  "locations": {
+    "home": {
+      "id": "home",
+      "name": "Your Apartment",
+      "description": "A cramped studio apartment in the Prime Housing Complex. Your subscription tier barely covers rent. Through the window, you see endless drones delivering packages.",
+      "sprite": "🏠",
+      "connections": [
+        {
+          "to": "city_streets",
+          "label": "Leave apartment"
+        }
+      ],
+      "items": [],
+      "encounters": []
+    },
+    "city_streets": {
+      "id": "city_streets",
+      "name": "Prime City Streets",
+      "description": "Neon signs advertise Prime services everywhere. Surveillance drones hover overhead. Citizens hurry past, eyes down, avoiding attention.",
+      "sprite": "🌆",
+      "connections": [
+        {
+          "to": "home",
+          "label": "Return home"
+        },
+        {
+          "to": "underground_market",
+          "label": "Enter alley"
+        },
+        {
+          "to": "prime_facility",
+          "label": "Prime Healthcare Center"
+        },
+        {
+          "to": "abandoned_district",
+          "label": "Old District"
+        }
+      ],
+      "encounters": [
+        {
+          "type": "combat",
+          "enemy": "security_drone"
+        }
+      ],
+      "encounterRate": 0.15
+    },
+    "underground_market": {
+      "id": "underground_market",
+      "name": "Underground Market",
+      "description": "Hidden beneath the city, this black market thrives outside Prime's surveillance. The air smells of ozone and desperation. People trade contraband, information, and hope.",
+      "sprite": "🏪",
+      "connections": [
+        {
+          "to": "city_streets",
+          "label": "Return to surface"
+        },
+        {
+          "to": "safe_house",
+          "label": "Hidden door",
+          "locked": true,
+          "unlockedBy": "knows_safe_house"
+        }
+      ],
+      "actions": [
+        {
+          "type": "custom",
+          "label": "Browse black market",
+          "action": "open-shop"
+        }
+      ]
+    },
+    "abandoned_library": {
+      "id": "abandoned_library",
+      "name": "Abandoned Library",
+      "description": "This pre-Prime library was supposed to be demolished. Books gather dust alongside broken data terminals. Knowledge Prime wanted to erase.",
+      "sprite": "📚",
+      "connections": [
+        {
+          "to": "abandoned_district",
+          "label": "Leave library"
+        }
+      ],
+      "hiddenItems": [
+        {
+          "id": "ancient_tome",
+          "name": "Ancient Tome",
+          "type": "quest",
+          "description": "A book on pre-corporate magical traditions"
+        }
+      ],
+      "items": [
+        {
+          "id": "old_journal",
+          "name": "Old Journal",
+          "type": "readable",
+          "description": "Someone's diary from before Prime"
+        }
+      ]
+    },
+    "abandoned_district": {
+      "id": "abandoned_district",
+      "name": "Abandoned District",
+      "description": "Prime abandoned this area after extracting all value. Crumbling buildings and forgotten streets. Some say magic still lingers here.",
+      "sprite": "🏚️",
+      "connections": [
+        {
+          "to": "city_streets",
+          "label": "Back to city"
+        },
+        {
+          "to": "abandoned_library",
+          "label": "Old library building"
+        },
+        {
+          "to": "ritual_site",
+          "label": "Strange clearing",
+          "locked": true,
+          "unlockedBy": "discovered_ritual_site"
+        }
+      ],
+      "encounters": [
+        {
+          "type": "combat",
+          "enemy": "mutant_rat"
+        },
+        {
+          "type": "combat",
+          "enemy": "security_drone"
+        }
+      ],
+      "encounterRate": 0.25
+    },
+    "prime_facility": {
+      "id": "prime_facility",
+      "name": "Prime Healthcare Center",
+      "description": "Gleaming white walls and the smell of sanitizer. Staff move efficiently between stations. Your 300-year waiting list position mocks you from a screen.",
+      "sprite": "🏥",
+      "connections": [
+        {
+          "to": "city_streets",
+          "label": "Exit facility"
+        }
+      ],
+      "actions": [
+        {
+          "type": "custom",
+          "label": "Check waiting list",
+          "action": "check-waiting-list"
+        }
+      ]
+    },
+    "safe_house": {
+      "id": "safe_house",
+      "name": "Community Safe House",
+      "description": "A secret space where trans folks gather, share resources, and support each other. The walls are covered in art and mutual aid posters. This place feels like home.",
+      "sprite": "🏡",
+      "connections": [
+        {
+          "to": "underground_market",
+          "label": "Back to market"
+        }
+      ],
+      "availableIf": {
+        "flag": "found_safe_house"
+      }
+    },
+    "ritual_site": {
+      "id": "ritual_site",
+      "name": "The Forgotten Place",
+      "description": "An ancient site of power, untouched by Prime. The air crackles with possibility. This is where transformation begins.",
+      "sprite": "⭐",
+      "connections": [
+        {
+          "to": "abandoned_district",
+          "label": "Leave this place"
+        }
+      ],
+      "actions": [
+        {
+          "type": "custom",
+          "label": "Perform lichdom ritual",
+          "action": "lichdom-ritual",
+          "condition": {
+            "flag": "ready_for_ritual"
+          }
+        }
+      ],
+      "availableIf": {
+        "flag": "discovered_ritual_site"
+      }
+    },
+    "prime_train": {
+      "id": "prime_train",
+      "name": "Prime High-Speed Train",
+      "description": "Luxury transport for Premium subscribers. The train hums with barely contained energy as it speeds through underground tunnels.",
+      "sprite": "🚄",
+      "connections": [
+        {
+          "to": "city_streets",
+          "label": "Disembark"
+        }
+      ],
+      "encounters": [
+        {
+          "type": "combat",
+          "enemy": "elite_guard"
+        }
+      ]
+    }
+  },
+  "enemies": {
+    "security_drone": {
+      "id": "security_drone",
+      "name": "Prime Security Drone",
+      "maxHealth": 8,
+      "attack": 2,
+      "defense": 8,
+      "sprite": "🤖",
+      "description": "An automated security drone with taser appendages.",
+      "specialAttack": "Electric Shock",
+      "drops": [
+        {
+          "item": {
+            "id": "drone_parts",
+            "name": "Drone Parts",
+            "type": "material",
+            "value": 15
+          },
+          "chance": 0.7
+        }
+      ]
+    },
+    "mutant_rat": {
+      "id": "mutant_rat",
+      "name": "Mutant Rat",
+      "maxHealth": 5,
+      "attack": 1,
+      "defense": 7,
+      "sprite": "🐀",
+      "description": "Mutated by Prime's industrial waste.",
+      "drops": [
+        {
+          "item": {
+            "id": "rat_tail",
+            "name": "Mutant Rat Tail",
+            "type": "material",
+            "value": 5
+          },
+          "chance": 0.5
+        }
+      ]
+    },
+    "elite_guard": {
+      "id": "elite_guard",
+      "name": "Prime Elite Guard",
+      "maxHealth": 15,
+      "attack": 3,
+      "defense": 10,
+      "sprite": "💂",
+      "description": "Highly trained Prime security forces.",
+      "specialAttack": "Stun Baton",
+      "drops": [
+        {
+          "item": {
+            "id": "security_keycard",
+            "name": "Security Keycard",
+            "type": "key",
+            "value": 50
+          },
+          "chance": 0.4
+        },
+        {
+          "item": {
+            "id": "credits",
+            "name": "Prime Credits",
+            "type": "currency",
+            "value": 100,
+            "quantity": 50
+          },
+          "chance": 1.0
+        }
+      ]
+    },
+    "lich_bezos": {
+      "id": "lich_bezos",
+      "name": "Lich J*ff B*zos",
+      "maxHealth": 50,
+      "attack": 5,
+      "defense": 15,
+      "sprite": "💀",
+      "description": "The immortal founder of Prime, a skeletal figure in an executive suit.",
+      "specialAttack": "Corporate Takeover",
+      "boss": true
+    }
+  },
+  "items": {
+    "health_pack": {
+      "id": "health_pack",
+      "name": "Medical Kit",
+      "type": "consumable",
+      "effect": "heal",
+      "power": 3,
+      "description": "A basic medical kit. Restores 3 HP.",
+      "value": 25,
+      "stackable": true
+    },
+    "energy_drink": {
+      "id": "energy_drink",
+      "name": "Prime Energy Drink",
+      "type": "consumable",
+      "effect": "heal",
+      "power": 2,
+      "description": "Restores 2 HP. Tastes like capitalism.",
+      "value": 10,
+      "stackable": true
+    },
+    "ancient_tome": {
+      "id": "ancient_tome",
+      "name": "Tome of Transformation",
+      "type": "quest",
+      "description": "Ancient knowledge about becoming a lich. This could be your spell source.",
+      "value": 1000,
+      "important": true
+    },
+    "crystal_heart": {
+      "id": "crystal_heart",
+      "name": "Crystallized Heart",
+      "type": "quest",
+      "description": "A heart transformed into pure crystal. Pulses with magical energy. This could be your rare component.",
+      "value": 1000,
+      "important": true
+    },
+    "prime_data_chip": {
+      "id": "prime_data_chip",
+      "name": "Prime Data Chip",
+      "type": "quest",
+      "description": "Contains encrypted Prime corporate secrets.",
+      "value": 500
+    },
+    "lockpick": {
+      "id": "lockpick",
+      "name": "Lockpick Set",
+      "type": "tool",
+      "description": "For accessing restricted areas.",
+      "value": 30
+    },
+    "drone_parts": {
+      "id": "drone_parts",
+      "name": "Drone Parts",
+      "type": "material",
+      "value": 15,
+      "description": "Salvaged parts from destroyed security drones"
+    },
+    "rat_tail": {
+      "id": "rat_tail",
+      "name": "Mutant Rat Tail",
+      "type": "material",
+      "value": 5,
+      "description": "A tail from a mutated rat"
+    },
+    "security_keycard": {
+      "id": "security_keycard",
+      "name": "Security Keycard",
+      "type": "key",
+      "value": 50,
+      "description": "A keycard from a Prime Elite Guard"
+    },
+    "credits": {
+      "id": "credits",
+      "name": "Prime Credits",
+      "type": "currency",
+      "value": 100,
+      "description": "The official currency of Prime Corporation"
+    },
+    "admin_access_chip": {
+      "id": "admin_access_chip",
+      "name": "Admin Access Chip",
+      "type": "key",
+      "description": "Grants access to Prime Archive terminals"
+    },
+    "apartment_key": {
+      "id": "apartment_key",
+      "name": "Apartment Keycard",
+      "type": "key",
+      "description": "Your Prime Housing Complex keycard"
+    },
+    "old_journal": {
+      "id": "old_journal",
+      "name": "Old Journal",
+      "type": "readable",
+      "description": "Someone's diary from before Prime"
+    }
+  },
+  "starter_items": [
+    {
+      "id": "energy_drink",
+      "name": "Prime Energy Drink",
+      "type": "consumable",
+      "effect": "heal",
+      "power": 2,
+      "stackable": true,
+      "quantity": 2
+    },
+    {
+      "id": "apartment_key",
+      "name": "Apartment Keycard",
+      "type": "key",
+      "description": "Your Prime Housing Complex keycard"
+    }
+  ],
+  "dialogues": {
+    "dialogue_ash": {
+      "greeting": {
+        "text": "You look lost. First time in the underground?",
+        "choices": [
+          {
+            "text": "I'm looking for information about... alternative healthcare.",
+            "next": "healthcare_info"
+          },
+          {
+            "text": "What is this place?",
+            "next": "market_info"
+          },
+          {
+            "text": "Just passing through.",
+            "action": "end"
+          }
+        ]
+      },
+      "greeting_repeat": {
+        "text": "Back again? What do you need?",
+        "choices": [
+          {
+            "text": "Tell me about the resistance.",
+            "next": "resistance_info",
+            "condition": {
+              "flag": "knows_about_lichdom"
+            }
+          },
+          {
+            "text": "I need supplies.",
+            "action": "trade"
+          },
+          {
+            "text": "Nothing right now.",
+            "action": "end"
+          }
+        ]
+      },
+      "healthcare_info": {
+        "text": "300-year waiting list, right? Prime's way of saying 'never'. But there are... other options. Older paths. If you're willing to go beyond what Prime controls.",
+        "choices": [
+          {
+            "text": "Tell me more about these 'older paths'.",
+            "next": "lichdom_hint"
+          },
+          {
+            "text": "That sounds dangerous.",
+            "next": "danger_warning"
+          }
+        ]
+      },
+      "market_info": {
+        "text": "This is where people come when Prime's system fails them. Which is most people. We trade what Prime doesn't want us to have - medicine, real food, information, freedom.",
+        "choices": [
+          {
+            "text": "Interesting. What else can you tell me?",
+            "next": "greeting_repeat"
+          }
+        ]
+      },
+      "lichdom_hint": {
+        "text": "Magic. Real magic, not Prime's tech. Some say you can transcend mortality entirely. Become something beyond their control. A lich - undead, immortal. You'd have all the time in the world.",
+        "choices": [
+          {
+            "text": "How would I even start?",
+            "next": "quest_start",
+            "effects": {
+              "setFlag": "knows_about_lichdom"
+            }
+          },
+          {
+            "text": "That sounds like fantasy.",
+            "next": "skepticism"
+          }
+        ]
+      },
+      "quest_start": {
+        "text": "You need three things: a spell source, a rare component, and a magical location. Dr. Morgan at the old library might know about spell sources. The Collector here sometimes has rare items. And magical places... you'll have to search.",
+        "choices": [
+          {
+            "text": "Thank you. I'll find them.",
+            "action": "end",
+            "effects": {
+              "addQuest": {
+                "id": "find_spell_source",
+                "name": "Find the Spell Source",
+                "description": "Seek out Dr. Morgan at the abandoned library",
+                "objectives": [
+                  {
+                    "type": "talk",
+                    "target": "old_librarian",
+                    "description": "Speak with Dr. Morgan"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "danger_warning": {
+        "text": "Dangerous? Sure. But so is waiting 300 years to be yourself. Pick your danger.",
+        "choices": [
+          {
+            "text": "You're right. Tell me more.",
+            "next": "lichdom_hint"
+          },
+          {
+            "text": "I need to think about this.",
+            "action": "end"
+          }
+        ]
+      },
+      "skepticism": {
+        "text": "Fifty years ago, they said the internet was fantasy. A hundred years ago, airplanes. Prime's taught us that only their tech matters. But magic never left - it just went underground.",
+        "choices": [
+          {
+            "text": "Maybe you're right. How do I start?",
+            "next": "quest_start"
+          },
+          {
+            "text": "I'll think about it.",
+            "action": "end"
+          }
+        ]
+      },
+      "resistance_info": {
+        "text": "We're people who refuse to live under Prime's control. Some of us sabotage their systems. Others build alternatives. And some... some of us are seeking power beyond their reach.",
+        "choices": [
+          {
+            "text": "I want to help.",
+            "next": "join_resistance"
+          },
+          {
+            "text": "Good luck with that.",
+            "action": "end"
+          }
+        ]
+      },
+      "join_resistance": {
+        "text": "Then prove it. Prime's got a data center nearby. Get us access codes and we'll know you're serious.",
+        "choices": [
+          {
+            "text": "I'll do it.",
+            "action": "end",
+            "effects": {
+              "addQuest": {
+                "id": "resistance_task",
+                "name": "Prove Your Worth",
+                "description": "Steal access codes from a Prime facility",
+                "objectives": [
+                  {
+                    "type": "acquire",
+                    "target": "access_codes",
+                    "description": "Obtain Prime access codes"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "dialogue_morgan": {
+      "greeting": {
+        "text": "Fascinating. Another seeker of knowledge in this forgotten place. What brings you to my dusty refuge?",
+        "choices": [
+          {
+            "text": "I'm looking for information about transformation magic.",
+            "next": "transformation_query"
+          },
+          {
+            "text": "What happened to this library?",
+            "next": "library_history"
+          },
+          {
+            "text": "Just exploring.",
+            "action": "end"
+          }
+        ]
+      },
+      "greeting_repeat": {
+        "text": "Ah, back for more knowledge? The books and I are patient.",
+        "choices": [
+          {
+            "text": "Tell me about lichdom.",
+            "next": "lichdom_explanation",
+            "condition": {
+              "flag": "knows_about_lichdom"
+            }
+          },
+          {
+            "text": "I need the spell source.",
+            "next": "spell_source_quest",
+            "condition": {
+              "hasQuest": "find_spell_source"
+            }
+          },
+          {
+            "text": "Just browsing.",
+            "action": "end"
+          }
+        ]
+      },
+      "transformation_query": {
+        "text": "Transformation... yes. The old magic of becoming. Prime buried this knowledge because it threatens their control. But some texts survive. What specifically interests you?",
+        "choices": [
+          {
+            "text": "Lichdom. Becoming undead to escape time.",
+            "next": "lichdom_explanation"
+          }
+        ]
+      },
+      "lichdom_explanation": {
+        "text": "Ah. The ultimate transformation. Trading life for unlife, mortality for eternity. It requires great sacrifice and greater will. But yes, it's possible. The texts are here.",
+        "choices": [
+          {
+            "text": "I need those texts. It's urgent.",
+            "next": "spell_source_quest"
+          },
+          {
+            "text": "What kind of sacrifice?",
+            "next": "sacrifice_explanation"
+          }
+        ]
+      },
+      "spell_source_quest": {
+        "text": "I can help you. But the complete tome is hidden - buried in digital form on a Prime server they don't monitor anymore. You'll need technical skills... or Sense to find a way in.",
+        "choices": [
+          {
+            "text": "[Sense 2+] I can find a way.",
+            "next": "sense_check",
+            "condition": {
+              "attribute": "sense",
+              "min": 2
+            }
+          },
+          {
+            "text": "I'll figure something out.",
+            "action": "end",
+            "effects": {
+              "setFlag": "needs_spell_source"
+            }
+          }
+        ]
+      },
+      "sense_check": {
+        "text": "Impressive. Here - this data chip contains an old admin access. You'll need to physically access a terminal in the Prime Archive. Dangerous, but you seem capable.",
+        "choices": [
+          {
+            "text": "Thank you. I'll get it.",
+            "action": "end",
+            "effects": {
+              "addItem": {
+                "id": "admin_access_chip",
+                "name": "Admin Access Chip",
+                "type": "key",
+                "description": "Grants access to Prime Archive terminals"
+              },
+              "setFlag": "can_access_archive"
+            }
+          }
+        ]
+      },
+      "library_history": {
+        "text": "Prime declared physical books 'obsolete' twenty years ago. They digitized what they approved, destroyed the rest. I... salvaged what I could. Knowledge they wanted erased.",
+        "choices": [
+          {
+            "text": "Thank you for preserving it.",
+            "next": "greeting_repeat"
+          }
+        ]
+      },
+      "sacrifice_explanation": {
+        "text": "Lichdom requires giving up pieces of yourself. Your health, your relationships, your humanity. Each step toward immortality costs you something mortal. The ritual itself demands everything you are - and remakes you into something new.",
+        "choices": [
+          {
+            "text": "I understand. I'm ready.",
+            "next": "spell_source_quest"
+          },
+          {
+            "text": "That's... a lot to consider.",
+            "action": "end"
+          }
+        ]
+      }
+    },
+    "dialogue_taylor": {
+      "greeting": {
+        "text": "Hey neighbor. Another day, another shift operating drones for our Prime overlords, right?",
+        "choices": [
+          {
+            "text": "How are you holding up?",
+            "next": "wellbeing_check"
+          },
+          {
+            "text": "Do you ever think about leaving?",
+            "next": "escape_talk"
+          },
+          {
+            "text": "See you later.",
+            "action": "end"
+          }
+        ]
+      },
+      "wellbeing_check": {
+        "text": "Honestly? Barely. Ten hours a day watching screens, making sure drones deliver on time. If I'm two seconds slow, my performance score drops. Lower score means higher rent. It's a trap.",
+        "choices": [
+          {
+            "text": "There has to be another way.",
+            "next": "hope_discussion"
+          },
+          {
+            "text": "I'm sorry you're going through this.",
+            "action": "end"
+          }
+        ]
+      },
+      "escape_talk": {
+        "text": "All the time. But where would I go? Prime owns everything. Every city, every job, every service. There's no 'leaving' anymore.",
+        "choices": [
+          {
+            "text": "What if we didn't need their system at all?",
+            "next": "alternative_systems",
+            "condition": {
+              "flag": "knows_about_lichdom"
+            }
+          },
+          {
+            "text": "I understand. Stay strong.",
+            "action": "end"
+          }
+        ]
+      },
+      "hope_discussion": {
+        "text": "Is there? You sound like you've got something in mind.",
+        "choices": [
+          {
+            "text": "I'm working on it. I'll let you know.",
+            "action": "end",
+            "effects": {
+              "setFlag": "taylor_hopeful"
+            }
+          }
+        ]
+      },
+      "alternative_systems": {
+        "text": "Now that's interesting. If you find something real, something that works... I want in. We all deserve better than this.",
+        "choices": [
+          {
+            "text": "I'll remember that.",
+            "action": "end",
+            "effects": {
+              "setFlag": "taylor_ally"
+            }
+          }
+        ]
+      }
+    },
+    "dialogue_collector": {
+      "greeting": {
+        "text": "Rare items. Strange items. Items Prime doesn't want you to have. What's your interest?",
+        "choices": [
+          {
+            "text": "I need a rare magical component.",
+            "next": "magical_component",
+            "condition": {
+              "flag": "knows_about_lichdom"
+            }
+          },
+          {
+            "text": "What do you have for sale?",
+            "action": "trade"
+          },
+          {
+            "text": "Just looking.",
+            "action": "end"
+          }
+        ]
+      },
+      "magical_component": {
+        "text": "For lichdom? Ambitious. I have something... a crystallized heart. Ripped from a living being and transformed through magic. Extremely rare. Extremely expensive.",
+        "choices": [
+          {
+            "text": "How much?",
+            "next": "price_negotiation"
+          },
+          {
+            "text": "Is there another way to get one?",
+            "next": "alternative_acquisition"
+          }
+        ]
+      },
+      "price_negotiation": {
+        "text": "5000 Prime Credits. Or... you could do me a favor. Prime's got a shipment coming through - rare artifacts. Get me three pieces from that shipment, and the heart is yours.",
+        "choices": [
+          {
+            "text": "I'll get you those artifacts.",
+            "action": "end",
+            "effects": {
+              "addQuest": {
+                "id": "heist_quest",
+                "name": "The Prime Train Heist",
+                "description": "Steal artifacts from a Prime shipment",
+                "objectives": [
+                  {
+                    "type": "acquire",
+                    "target": "artifact_1",
+                    "description": "First artifact"
+                  },
+                  {
+                    "type": "acquire",
+                    "target": "artifact_2",
+                    "description": "Second artifact"
+                  },
+                  {
+                    "type": "acquire",
+                    "target": "artifact_3",
+                    "description": "Third artifact"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "text": "I'll think about it.",
+            "action": "end"
+          }
+        ]
+      },
+      "alternative_acquisition": {
+        "text": "Create one yourself. But that means sacrificing something deeply important to you - transforming it magically. Most people can't stomach that cost.",
+        "choices": [
+          {
+            "text": "I see. Thank you.",
+            "action": "end",
+            "effects": {
+              "setFlag": "knows_heart_creation"
+            }
+          }
+        ]
+      }
+    },
+    "dialogue_raven": {
+      "greeting": {
+        "text": "Welcome, sibling. This is a safe space. You can rest here. What brings you to us?",
+        "choices": [
+          {
+            "text": "I need guidance.",
+            "next": "guidance_request"
+          },
+          {
+            "text": "Just needed to find community.",
+            "next": "community_discussion"
+          }
+        ]
+      },
+      "guidance_request": {
+        "text": "I've guided many on their journeys. What troubles you?",
+        "choices": [
+          {
+            "text": "I'm seeking lichdom to outlast Prime's waiting lists.",
+            "next": "lichdom_guidance",
+            "condition": {
+              "flag": "knows_about_lichdom"
+            }
+          },
+          {
+            "text": "How do we survive in this world?",
+            "next": "survival_wisdom"
+          }
+        ]
+      },
+      "lichdom_guidance": {
+        "text": "A radical choice. But then, our existence has always been radical. Transformation as resistance. Remember - becoming lich doesn't mean abandoning who you are. It means transcending their limits.",
+        "choices": [
+          {
+            "text": "Thank you. I needed to hear that.",
+            "action": "end",
+            "effects": {
+              "modifyHealth": 2,
+              "setFlag": "raven_blessing"
+            }
+          }
+        ]
+      },
+      "community_discussion": {
+        "text": "We all do. In a world that tries to erase us, finding each other is survival. And resistance.",
+        "choices": [
+          {
+            "text": "This place gives me hope.",
+            "action": "end",
+            "effects": {
+              "modifyHealth": 1
+            }
+          }
+        ]
+      },
+      "survival_wisdom": {
+        "text": "We survive by refusing to disappear. By building systems of care when theirs fail us. By being there for each other. And sometimes, by finding power in unexpected places.",
+        "choices": [
+          {
+            "text": "I understand.",
+            "action": "end"
+          }
+        ]
+      }
+    },
+    "dialogue_kane": {
+      "greeting": {
+        "text": "Citizen. State your business at this facility.",
+        "choices": [
+          {
+            "text": "Just checking my waiting list status.",
+            "action": "end"
+          },
+          {
+            "text": "I'm here for emergency care.",
+            "next": "emergency_care"
+          }
+        ]
+      },
+      "emergency_care": {
+        "text": "Emergency care requires Premium subscription or immediate payment of 10,000 credits. Do you have either?",
+        "choices": [
+          {
+            "text": "I'll come back later.",
+            "action": "end"
+          }
+        ]
+      }
+    }
+  },
+  "quests": [
+    {
+      "id": "find_spell_source",
+      "name": "Find the Spell Source",
+      "description": "Seek out Dr. Morgan at the abandoned library to learn about the spell source needed for lichdom",
+      "objectives": [
+        {
+          "type": "talk",
+          "target": "old_librarian",
+          "description": "Speak with Dr. Morgan"
+        }
+      ],
+      "giver": "resistance_contact",
+      "rewards": {
+        "experience": 100
+      }
+    },
+    {
+      "id": "resistance_task",
+      "name": "Prove Your Worth",
+      "description": "Steal access codes from a Prime facility to prove your loyalty to the resistance",
+      "objectives": [
+        {
+          "type": "acquire",
+          "target": "access_codes",
+          "description": "Obtain Prime access codes"
+        }
+      ],
+      "giver": "resistance_contact",
+      "rewards": {
+        "experience": 150,
+        "reputation": "resistance"
+      }
+    },
+    {
+      "id": "heist_quest",
+      "name": "The Prime Train Heist",
+      "description": "Steal three rare artifacts from a Prime shipment on their high-speed train",
+      "objectives": [
+        {
+          "type": "acquire",
+          "target": "artifact_1",
+          "description": "First artifact"
+        },
+        {
+          "type": "acquire",
+          "target": "artifact_2",
+          "description": "Second artifact"
+        },
+        {
+          "type": "acquire",
+          "target": "artifact_3",
+          "description": "Third artifact"
+        }
+      ],
+      "giver": "mysterious_vendor",
+      "rewards": {
+        "item": "crystal_heart",
+        "experience": 300
+      }
+    },
+    {
+      "id": "lichdom_ritual",
+      "name": "The Lichdom Ritual",
+      "description": "Gather all three components and perform the ritual to become a lich",
+      "objectives": [
+        {
+          "type": "acquire",
+          "target": "ancient_tome",
+          "description": "Obtain the Tome of Transformation"
+        },
+        {
+          "type": "acquire",
+          "target": "crystal_heart",
+          "description": "Obtain the Crystallized Heart"
+        },
+        {
+          "type": "location",
+          "target": "ritual_site",
+          "description": "Find the magical ritual site"
+        },
+        {
+          "type": "custom",
+          "target": "perform_ritual",
+          "description": "Perform the lichdom ritual"
+        }
+      ],
+      "rewards": {
+        "transformation": "lich",
+        "experience": 1000
+      }
+    }
+  ],
+  "game_flags": [
+    "knows_about_lichdom",
+    "knows_safe_house",
+    "found_safe_house",
+    "discovered_ritual_site",
+    "ready_for_ritual",
+    "needs_spell_source",
+    "can_access_archive",
+    "knows_heart_creation",
+    "taylor_hopeful",
+    "taylor_ally",
+    "raven_blessing"
+  ]
+}

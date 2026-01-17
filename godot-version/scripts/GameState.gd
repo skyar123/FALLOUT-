@@ -3,6 +3,16 @@ extends Node
 ## Global game state manager
 ## Stores player data, inventory, quests, flags, and handles save/load
 
+# Game data loaded from JSON
+var game_data: Dictionary = {}
+var npcs: Dictionary = {}
+var locations: Dictionary = {}
+var enemies: Dictionary = {}
+var items: Dictionary = {}
+var dialogues: Dictionary = {}
+var quests: Dictionary = {}
+var character_creation: Array = []
+
 # Player attributes
 var player_name: String = "Wanderer"
 var player_health: int = 10
@@ -36,6 +46,73 @@ signal quest_updated(quest_id: String)
 
 func _ready() -> void:
 	print("GameState initialized")
+	load_game_data()
+
+## Load game data from JSON
+func load_game_data() -> void:
+	var file = FileAccess.open("res://data/game_data.json", FileAccess.READ)
+	if not file:
+		print("ERROR: Could not load game_data.json!")
+		return
+
+	var json_string = file.get_as_text()
+	file.close()
+
+	var json = JSON.new()
+	var parse_result = json.parse(json_string)
+
+	if parse_result != OK:
+		print("ERROR: Failed to parse game_data.json!")
+		return
+
+	game_data = json.data
+	npcs = game_data.get("npcs", {})
+	locations = game_data.get("locations", {})
+	enemies = game_data.get("enemies", {})
+	items = game_data.get("items", {})
+	dialogues = game_data.get("dialogues", {})
+	quests = game_data.get("quests", {})
+	character_creation = game_data.get("character_creation", [])
+
+	print("Game data loaded successfully!")
+	print("- NPCs: ", npcs.size())
+	print("- Locations: ", locations.size())
+	print("- Enemies: ", enemies.size())
+	print("- Items: ", items.size())
+	print("- Dialogues: ", dialogues.size())
+	print("- Quests: ", quests.size())
+
+## Get data helpers
+func get_npc(npc_id: String) -> Dictionary:
+	return npcs.get(npc_id, {})
+
+func get_location(location_id: String) -> Dictionary:
+	return locations.get(location_id, {})
+
+func get_enemy(enemy_id: String) -> Dictionary:
+	return enemies.get(enemy_id, {})
+
+func get_item(item_id: String) -> Dictionary:
+	return items.get(item_id, {})
+
+func get_dialogue(dialogue_id: String) -> Dictionary:
+	return dialogues.get(dialogue_id, {})
+
+func get_quest(quest_id: String) -> Dictionary:
+	return quests.get(quest_id, {})
+
+func get_npcs_at_location(location_id: String) -> Array:
+	var npcs_here = []
+	for npc_id in npcs:
+		var npc = npcs[npc_id]
+		if npc.get("location") == location_id:
+			# Check if NPC is available (conditional availability)
+			if npc.has("availableIf"):
+				var condition = npc["availableIf"]
+				if condition.has("flag") and not get_flag(condition["flag"]):
+					continue
+			npcs_here.append(npc)
+	return npcs_here
 
 ## Character Management
 func create_character(char_data: Dictionary) -> void:
